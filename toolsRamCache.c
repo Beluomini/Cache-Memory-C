@@ -2,16 +2,20 @@
 #include <stdlib.h>
 #include <math.h>
 
-// int insereNaCache(int valor, int posicaoRam, TipoFila *memCache, int memRam[]){
-//     Celula *preenchida;
-//     if(buscaNaCache(valor, memCache, preenchida) == -1){
-//         if(memCache->tamanho < QTD_LINHA_RAM){
-//             Enfileira(preenchida->Item, memCache);
-//             return 1;
-//         }else{
-//             Desenfileira(memCache);
-//         }
-//     }
-//     // Enfileira(a.Item, memCache);
-//     return 0;
-// }
+int insereNaCache(Celula valor, TipoLista *memCache){
+    if(buscaNaCache(valor, memCache) == NULL){
+        if(memCache->Tamanho < QTD_LINHA_CACHE){
+            Insere(valor.Linha, memCache);
+            printf("\n\n--> Inserindo na cache\n");
+            return 1;
+        }else{
+            printf("\n-->'removendo' uma linha\n");
+            Retira(memCache->Primeiro, memCache);
+            printf("\n---> removeu o ultimo\n");
+            Insere(valor.Linha, memCache);
+            printf("\n---> inseriu o novo\n");
+            return 0;
+        }
+    }
+    return 0;
+}
