@@ -23,19 +23,6 @@ void Insere (LinhaCache novaLinha, TipoLista *Lista){
     Lista -> Tamanho++;
 }
 
-//Busca um valor na memoria ram e retorna -1 caso nao encontre ou a linha em que o valor se encontra na cache
-Celula* buscaNaCache(Celula cel, TipoLista *memCache){
-    Celula* aux;
-    aux = memCache->Primeiro;
-    while(aux != NULL){
-        if(aux->Linha.valor1 == cel.Linha.valor1 || aux->Linha.valor2 == cel.Linha.valor2){
-            return aux;
-        }
-        aux = aux->Prox;
-    }
-    return aux;
-}
-
 //Busca um valor na lista remove caso encontre
 void Retira (Celula* p, TipoLista *Lista){
     Celula* q;

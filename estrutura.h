@@ -4,11 +4,13 @@
 #define LISTA
 
 #define QTD_LINHA_CACHE 8
-#define TAM_ENTRADA 11
+#define TAM_ENTRADA 12
 
 typedef struct{
     int valor1;     //valor da primeira coluna da linha
     int valor2;     //valor da segunda coluna da linha
+    int posicaoValor1;     //valor da primeira coluna da linha
+    int posicaoValor2;     //valor da segunda coluna da linha
     int alteracao;   //se vai haver alteracao na primeira coluna da linha
 }LinhaCache;
 
