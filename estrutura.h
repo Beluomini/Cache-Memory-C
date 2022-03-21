@@ -3,8 +3,10 @@
 #define CELULA
 #define LISTA
 
+#define QTD_LINHA_RAM 1000
 #define QTD_LINHA_CACHE 8
-#define TAM_ENTRADA 12
+#define TAM_ENTRADA_ACESSOS 12
+#define RANGE_RAM_VALORES 1000
 
 typedef struct{
     int valor1;     //valor da primeira coluna da linha

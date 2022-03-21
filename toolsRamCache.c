@@ -8,7 +8,7 @@ Celula* buscaNaCache(Celula cel, TipoLista *memCache){
     Celula* aux;
     aux = memCache->Primeiro;
     while(aux != NULL){
-        if(aux->Linha.valor1 == cel.Linha.valor1 || aux->Linha.valor2 == cel.Linha.valor2){
+        if(aux->Linha.posicaoValor1 == cel.Linha.posicaoValor1 || aux->Linha.posicaoValor2 == cel.Linha.posicaoValor2){
             return aux;
         }
         aux = aux->Prox;
@@ -31,6 +31,6 @@ int substituiCacheFifo(Celula valor, TipoLista *memCache, int *memRam){
     }
     Retira(memCache->Primeiro, memCache);
     Insere(valor.Linha, memCache);
-    printf("\n> Inseriu o novo\n");
+    printf("\n\n> Inseriu o novo\n");
     return 0;
 }

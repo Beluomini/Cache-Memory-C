@@ -67,22 +67,20 @@ void RetiraPrimeiro (Celula* p, TipoLista *Lista){
 //Imprime a lista
 void Imprime(TipoLista Lista){
     Celula* Aux;
-    int i=1;
     Aux = Lista.Primeiro -> Prox;
     printf ("\n-----------------------------------------------------");
     while (Aux != NULL){
-        printf ("\nCodigo do elemento %d: %d", i, Aux->Linha.valor1);
-        printf ("\nCodigo do elemento %d: %d", i, Aux->Linha.valor2);
-        printf ("\nCodigo do elemento %d: %d", i, Aux->Linha.alteracao);
+        printf ("\nValor 1 => %d - posicao na RAM => %d", Aux->Linha.valor1, Aux->Linha.posicaoValor1);
+        printf ("\nValor 2 => %d - posicao na RAM => %d", Aux->Linha.valor2, Aux->Linha.posicaoValor2);
+        printf ("\nAlteracao: %d", Aux->Linha.alteracao);
         printf ("\n-----------------------------------------------------");
         Aux=Aux->Prox;
-        i++;
     }
 }
 
 //Imprime a lista uma Celula
 void ImprimeCelula(Celula cel){
-    printf("\n\n-> Celula -----------------------------------");
+    printf("\n> Celula -----------------------------------");
     printf ("\nvalor1: %d", cel.Linha.valor1);
     printf ("\nvalor2: %d", cel.Linha.valor2);
     printf ("\nverificador de alteracao: %d", cel.Linha.alteracao);
