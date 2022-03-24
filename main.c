@@ -5,13 +5,13 @@
 
 int main (){
     int opcao = 1;
+    // Menu de opções
+    printf("\n\n 0 - Sair");
+    printf("\n 1 - Metodo de substituicao FIFO");
+    printf("\n 2 - Metodo de substituicao LRU");
+    printf("\n Resposta: ");
+    scanf("%d", &opcao);
     do{
-        // Menu de opções
-        printf("\n\n 0 - Sair");
-        printf("\n 1 - Metodo de substituicao FIFO");
-        printf("\n 2 - Metodo de substituicao LRU");
-        printf("\n Resposta: ");
-        scanf("%d", &opcao);
         
         int acessosRAM[TAM_ENTRADA_ACESSOS] = {3,2,4,7,21,4,10,24,12,14,16,32}; // Ordem de acesso de posicoes da RAM
         int alteracaoEntrada[TAM_ENTRADA_ACESSOS] = {0,0,1,0,0,0,0,0,0,0,0,0}; // 1 Se haverá alteracao e 0 se não haverá
@@ -71,10 +71,24 @@ int main (){
                 }
             }else{
                 printf("\n-> Achou na posicao na cache (HIT)\n");
+                Imprime(memCache);
                 if(opcao == 2){
-                    printf("\n> Para o LRU valor tem que ser jogado para o topo da lista\n");
+                    printf("\n> Para o LRU valor tem que ser jogado para o final da lista\n");
+                    Celula *aux = memCache.Primeiro->Prox;
+                    while(aux != NULL && memCache.Ultimo != encontrou){
+                        if(aux->Prox == encontrou){
+                            printf("\n> Movendo para o final da lista\n");
+                            aux->Prox = encontrou->Prox;
+                            memCache.Ultimo->Prox = encontrou;
+                            memCache.Ultimo = encontrou;
+                            memCache.Ultimo->Prox = NULL;
+                        }
+                        aux = aux->Prox;
+                    }
+
                 }
-                ImprimeCelula(*encontrou);
+                Imprime(memCache);
+                
             }
         }
 
@@ -85,7 +99,12 @@ int main (){
         printf("\n\n--> Imprimindo cache\n");
         Imprime(memCache);
 
-
+        // Menu de opções
+        printf("\n\n 0 - Sair");
+        printf("\n 1 - Metodo de substituicao FIFO");
+        printf("\n 2 - Metodo de substituicao LRU");
+        printf("\n Resposta: ");
+        scanf("%d", &opcao);
 
     }while(opcao != 0);
     printf("\n\nPrograma Finalizado :)\n");
