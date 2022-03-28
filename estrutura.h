@@ -14,6 +14,7 @@ typedef struct{
     int posicaoValor1;     //valor da primeira coluna da linha
     int posicaoValor2;     //valor da segunda coluna da linha
     int alteracao;   //se vai haver alteracao na primeira coluna da linha
+    int fifo;
 }LinhaCache;
 
 typedef struct Celula{

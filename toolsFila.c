@@ -73,6 +73,7 @@ void Imprime(TipoLista Lista){
         printf ("\nValor 1 => %d - posicao na RAM => %d", Aux->Linha.valor1, Aux->Linha.posicaoValor1);
         printf ("\nValor 2 => %d - posicao na RAM => %d", Aux->Linha.valor2, Aux->Linha.posicaoValor2);
         printf ("\nAlteracao: %d", Aux->Linha.alteracao);
+        printf ("\nFIFO: %d", Aux->Linha.fifo);
         printf ("\n-----------------------------------------------------");
         Aux=Aux->Prox;
     }
@@ -84,5 +85,6 @@ void ImprimeCelula(Celula cel){
     printf ("\nvalor1: %d", cel.Linha.valor1);
     printf ("\nvalor2: %d", cel.Linha.valor2);
     printf ("\nverificador de alteracao: %d", cel.Linha.alteracao);
+    printf ("\nFIFO: %d", cel.Linha.fifo);
     printf ("\n-----------------------------------------------------\n");
 }
