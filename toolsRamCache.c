@@ -17,7 +17,7 @@ Celula* buscaNaCache(Celula cel, TipoLista *memCache){
 }
 
 //Caso a cache esteja cheia, retira o ultimo valor que foi adicionado a ela
-int substituiCacheFifo(Celula valor, TipoLista *memCache, int *memRam){
+int removePrimeiroLista(Celula valor, TipoLista *memCache, int *memRam){
     printf("\n> Limpou uma linha\n");
 
     if(memCache->Primeiro->Prox->Linha.alteracao == 1){
@@ -33,4 +33,40 @@ int substituiCacheFifo(Celula valor, TipoLista *memCache, int *memRam){
     Insere(valor.Linha, memCache);
     printf("\n\n> Inseriu o novo\n");
     return 0;
+}
+
+int reorganizaFifo(TipoLista *memCache){
+    printf("\n> Metodo FIFO\n");
+    Celula *remocaoPorFifo = memCache->Primeiro->Prox;
+    Celula *aux = memCache->Primeiro->Prox;
+    while(aux != NULL){
+        if(aux->Linha.fifo < remocaoPorFifo->Linha.fifo){
+            remocaoPorFifo = aux;
+        }
+        aux = aux->Prox;
+    }
+    aux = memCache->Primeiro->Prox;
+    while(aux != NULL && memCache->Primeiro != remocaoPorFifo){
+        if(aux->Prox == remocaoPorFifo){
+            printf("\n> Movendo o primeiro adicionado para para o comeco da lista\n");
+            aux->Prox = remocaoPorFifo->Prox;
+            remocaoPorFifo->Prox = memCache->Primeiro->Prox->Prox;
+            memCache->Primeiro->Prox = remocaoPorFifo;
+        }
+        aux = aux->Prox;
+    }
+}
+
+int reorganizaHit(Celula *encontrou, TipoLista *memCache){
+    Celula *aux = memCache->Primeiro->Prox;
+    while(aux != NULL && memCache->Ultimo != encontrou){
+        if(aux->Prox == encontrou){
+            printf("\n> Movendo para o final da lista\n");
+            aux->Prox = encontrou->Prox;
+            memCache->Ultimo->Prox = encontrou;
+            memCache->Ultimo = encontrou;
+            memCache->Ultimo->Prox = NULL;
+        }
+        aux = aux->Prox;
+    }
 }

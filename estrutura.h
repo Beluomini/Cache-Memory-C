@@ -4,8 +4,8 @@
 #define LISTA
 
 #define QTD_LINHA_RAM 1000
-#define QTD_LINHA_CACHE 8
-#define TAM_ENTRADA_ACESSOS 12
+#define QTD_LINHA_CACHE 16
+#define TAM_ENTRADA_ACESSOS 24
 #define RANGE_RAM_VALORES 1000
 
 typedef struct{

@@ -1,22 +1,45 @@
 # include <stdio.h>
 # include <string.h>
+# include <time.h>
 # include "toolsFila.c"
 # include "toolsRamCache.c"
 
 int main (){
     int opcao;
-
-    int acessosRAM[TAM_ENTRADA_ACESSOS] = {3,2,4,7,21,4,10,24,12,14,16,32}; // Ordem de acesso de posicoes da RAM
-    int alteracaoEntrada[TAM_ENTRADA_ACESSOS] = {0,0,1,0,0,0,0,0,0,0,0,0}; // 1 Se haverá alteracao e 0 se não haverá
+    srand((unsigned)time(NULL));
 
     // Criacao da memoria RAM
     int memRam[QTD_LINHA_RAM];
     for(int i=0; i<QTD_LINHA_RAM; i++){
-        memRam[i] = i;
-        // memRam[i] = rand() % RANGE_RAM_VALORES;
+        memRam[i] = rand() % RANGE_RAM_VALORES;
+    }
+    printf("\n\n---> Imprimindo memoria RAM\n");
+    for(int i=0; i<QTD_LINHA_RAM; i++){
+        printf("posicao %d -> %d   ", i, memRam[i]);
+        if(i%6 == 0){
+            printf("\n");
+        }
     }
 
-    printf("\n---> Criou lista vazia para memoria Cache\n"); // Cria uma lista para memoia Cache
+    // Criacao da ordemm de acesso na RAM
+    int acessosRAM[TAM_ENTRADA_ACESSOS];
+    for(int i=0; i<TAM_ENTRADA_ACESSOS; i++){
+        acessosRAM[i] = rand() % QTD_LINHA_RAM;
+    }
+    // 1 Se haverá alteracao e 0 se não havera
+    int alteracaoEntrada[TAM_ENTRADA_ACESSOS];
+    for(int i=0; i<TAM_ENTRADA_ACESSOS; i++){
+        alteracaoEntrada[i] = rand() % 2;
+    }
+
+    printf("\n\n---> Imprimindo ordem de acesso da memoria RAM\n");
+    for(int i=0; i<TAM_ENTRADA_ACESSOS; i++){
+        printf("acesso %d -> alteracao %d\n", acessosRAM[i], alteracaoEntrada[i]);
+    }
+
+
+
+    printf("\n---> Criou lista vazia para memoria Cache\n"); // Cria uma lista vazia para memoia Cache
     TipoLista memCache;
     FLVazia(&memCache);
 
@@ -24,6 +47,7 @@ int main (){
         
         printf("\n\n---> Pegando posicao %d na memoria RAM\n", acessosRAM[acessoAtual]);
 
+        // Cria uma celula com o valor da posicao da RAM que foi acessado
         Celula a;
         a.Linha.alteracao = alteracaoEntrada[acessoAtual];
         a.Linha.fifo = acessoAtual;
@@ -49,12 +73,11 @@ int main (){
             }
         }
 
+        // Busca a celula na memoria cache
         printf("\n--> Buscando celula %d - %d | %d - %d na memoria cache\n", a.Linha.posicaoValor1, a.Linha.valor1, a.Linha.posicaoValor2, a.Linha.valor2);
-
         Celula* encontrou = buscaNaCache(a, &memCache);
-        if(encontrou == NULL){
+        if(encontrou == NULL){ // Se nao encontrou
             printf("\n-> Nao esta na cache\n");
-
             if(memCache.Tamanho < QTD_LINHA_CACHE){ // Se a cache não estiver cheia insere no fim da lista
                 printf("\n> Inserindo na cache\n");
                 Insere(a.Linha, &memCache);
@@ -66,52 +89,30 @@ int main (){
                 printf("\n>>> ");
                 scanf("%d", &opcao);
                 if(opcao == 1){
-                    printf("\n> Metodo FIFO\n");
-                    Celula *remocaoPorFifo = memCache.Primeiro->Prox;
-                    Celula *aux = memCache.Primeiro->Prox;
-                    while(aux != NULL){
-                        if(aux->Linha.fifo < remocaoPorFifo->Linha.fifo){
-                            remocaoPorFifo = aux;
-                        }
-                        aux = aux->Prox;
-                    }
-                    aux = memCache.Primeiro->Prox;
-                    while(aux != NULL && memCache.Primeiro != remocaoPorFifo){
-                        if(aux->Prox == remocaoPorFifo){
-                            printf("\n> Movendo o primeiro adicionado para para o comeco da lista\n");
-                            aux->Prox = remocaoPorFifo->Prox;
-                            remocaoPorFifo->Prox = memCache.Primeiro->Prox->Prox;
-                            memCache.Primeiro->Prox = remocaoPorFifo;
-                        }
-                        aux = aux->Prox;
-                    }
+                    // Coloca o valor que foi inserido primeiro no topo da lista para ser removido
+                    reorganizaFifo(&memCache);
                 }
-                substituiCacheFifo(a, &memCache, memRam);
-                Imprime(memCache);
+                // Remove o prieiro da lista
+                removePrimeiroLista(a, &memCache, memRam);
             }
         }else{
             printf("\n-> Achou na posicao na cache (HIT)\n");
-            Celula *aux = memCache.Primeiro->Prox;
-            while(aux != NULL && memCache.Ultimo != encontrou){
-                if(aux->Prox == encontrou){
-                    printf("\n> Movendo para o final da lista\n");
-                    aux->Prox = encontrou->Prox;
-                    memCache.Ultimo->Prox = encontrou;
-                    memCache.Ultimo = encontrou;
-                    memCache.Ultimo->Prox = NULL;
-                }
-                aux = aux->Prox;
-            }
+            // Em caso de HIT atualiza a memoria cache colocando a celula na ultma posicao e a cache eh impressa
+            reorganizaHit(encontrou, &memCache);
             Imprime(memCache);
             
         }
     }
 
-    for(int i=0; i<100; i++){
-        printf("\n%d", memRam[i]);
+    printf("\n\n---> Imprimindo memoria RAM\n");
+    for(int i=0; i<QTD_LINHA_RAM; i++){
+        printf("posicao %d -> %d   ", i, memRam[i]);
+        if(i%6 == 0){
+            printf("\n");
+        }
     }
     
-    printf("\n\n--> Imprimindo cache\n");
+    printf("\n\n---> Imprimindo memoria cache\n");
     Imprime(memCache);
 
     printf("\n\nPrograma Finalizado :)\n");
