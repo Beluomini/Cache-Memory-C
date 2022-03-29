@@ -3,7 +3,7 @@
 #include <math.h>
 #include "estrutura.h"
 
-//Busca um valor na memoria ram e retorna -1 caso nao encontre ou a linha em que o valor se encontra na cache
+//Busca um valor na memoria principal e retorna NULL caso nao encontre ou a linha em que o valor se encontra na cache
 Celula* buscaNaCache(Celula cel, TipoLista *memCache){
     Celula* aux;
     aux = memCache->Primeiro;
@@ -16,17 +16,18 @@ Celula* buscaNaCache(Celula cel, TipoLista *memCache){
     return aux;
 }
 
-//Caso a cache esteja cheia, retira o ultimo valor que foi adicionado a ela
-int removePrimeiroLista(Celula valor, TipoLista *memCache, int *memRam){
+// Caso a cache esteja cheia, retira o valor que esta no topo da lista
+// Por LRU o valor menos acessado estara no topo
+int removePrimeiroLista(Celula valor, TipoLista *memCache, int *memPrincipal){
     printf("\n> Limpou uma linha\n");
 
     if(memCache->Primeiro->Prox->Linha.alteracao == 1){
         int posicaoValor1 = memCache->Primeiro->Prox->Linha.posicaoValor1;
         int posicaoValor2 = memCache->Primeiro->Prox->Linha.posicaoValor2;
-        printf("\n>> Alterou a linha %d da RAM: %d => %d", posicaoValor1, memRam[posicaoValor1], memCache->Primeiro->Prox->Linha.valor1);
-        printf("\n>> Alterou a linha %d da RAM: %d => %d", posicaoValor2, memRam[posicaoValor2], memCache->Primeiro->Prox->Linha.valor2);
-        memRam[posicaoValor1] = memCache->Primeiro->Prox->Linha.valor1;
-        memRam[posicaoValor2] = memCache->Primeiro->Prox->Linha.valor2;
+        printf("\n>> Alterou a linha %d da PRINCIPAL: %d => %d", posicaoValor1, memPrincipal[posicaoValor1], memCache->Primeiro->Prox->Linha.valor1);
+        printf("\n>> Alterou a linha %d da PRINCIPAL: %d => %d", posicaoValor2, memPrincipal[posicaoValor2], memCache->Primeiro->Prox->Linha.valor2);
+        memPrincipal[posicaoValor1] = memCache->Primeiro->Prox->Linha.valor1;
+        memPrincipal[posicaoValor2] = memCache->Primeiro->Prox->Linha.valor2;
         
     }
     Retira(memCache->Primeiro, memCache);
@@ -35,6 +36,9 @@ int removePrimeiroLista(Celula valor, TipoLista *memCache, int *memRam){
     return 0;
 }
 
+// Coloca a celula que tem o valor FIFO mais baixo para o topo
+// A celula com o valor FIFO mais baixo corresponde a primeira celula adicionada
+// Nesse caso a proxima a ser removida
 int reorganizaFifo(TipoLista *memCache){
     printf("\n> Metodo FIFO\n");
     Celula *remocaoPorFifo = memCache->Primeiro->Prox;
@@ -57,6 +61,7 @@ int reorganizaFifo(TipoLista *memCache){
     }
 }
 
+// No caso de HIT a celula que foi visitada é enviada para o fim da lista para ser a ultima a ser removida
 int reorganizaHit(Celula *encontrou, TipoLista *memCache){
     Celula *aux = memCache->Primeiro->Prox;
     while(aux != NULL && memCache->Ultimo != encontrou){

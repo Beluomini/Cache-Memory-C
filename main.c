@@ -2,29 +2,29 @@
 # include <string.h>
 # include <time.h>
 # include "toolsFila.c"
-# include "toolsRamCache.c"
+# include "toolsPrincipalCache.c"
 
 int main (){
     int opcao;
     srand((unsigned)time(NULL));
 
-    // Criacao da memoria RAM
-    int memRam[QTD_LINHA_RAM];
-    for(int i=0; i<QTD_LINHA_RAM; i++){
-        memRam[i] = rand() % RANGE_RAM_VALORES;
+    // Criacao da memoria PRINCIPAL
+    int memPrincipal[QTD_LINHA_PRINCIPAL];
+    for(int i=0; i<QTD_LINHA_PRINCIPAL; i++){
+        memPrincipal[i] = rand() % RANGE_PRINCIPAL_VALORES;
     }
-    printf("\n\n---> Imprimindo memoria RAM\n");
-    for(int i=0; i<QTD_LINHA_RAM; i++){
-        printf("posicao %d -> %d   ", i, memRam[i]);
+    printf("\n\n---> Imprimindo memoria PRINCIPAL\n");
+    for(int i=0; i<QTD_LINHA_PRINCIPAL; i++){
+        printf("posicao %d -> %d   ", i, memPrincipal[i]);
         if(i%6 == 0){
             printf("\n");
         }
     }
 
-    // Criacao da ordemm de acesso na RAM
-    int acessosRAM[TAM_ENTRADA_ACESSOS];
+    // Criacao da ordemm de acesso na PRINCIPAL
+    int acessosPRINCIPAL[TAM_ENTRADA_ACESSOS];
     for(int i=0; i<TAM_ENTRADA_ACESSOS; i++){
-        acessosRAM[i] = rand() % QTD_LINHA_RAM;
+        acessosPRINCIPAL[i] = rand() % QTD_LINHA_PRINCIPAL;
     }
     // 1 Se haverá alteracao e 0 se não havera
     int alteracaoEntrada[TAM_ENTRADA_ACESSOS];
@@ -32,9 +32,9 @@ int main (){
         alteracaoEntrada[i] = rand() % 2;
     }
 
-    printf("\n\n---> Imprimindo ordem de acesso da memoria RAM\n");
+    printf("\n\n---> Imprimindo ordem de acesso da memoria PRINCIPAL\n");
     for(int i=0; i<TAM_ENTRADA_ACESSOS; i++){
-        printf("acesso %d -> alteracao %d\n", acessosRAM[i], alteracaoEntrada[i]);
+        printf("acesso %d -> alteracao %d\n", acessosPRINCIPAL[i], alteracaoEntrada[i]);
     }
 
 
@@ -43,33 +43,33 @@ int main (){
     TipoLista memCache;
     FLVazia(&memCache);
 
-    for(int acessoAtual = 0; acessoAtual < TAM_ENTRADA_ACESSOS; acessoAtual++){ // Percorre todos os valores de acesso a ram
+    for(int acessoAtual = 0; acessoAtual < TAM_ENTRADA_ACESSOS; acessoAtual++){ // Percorre todos os valores de acesso a principal
         
-        printf("\n\n---> Pegando posicao %d na memoria RAM\n", acessosRAM[acessoAtual]);
+        printf("\n\n---> Pegando posicao %d na memoria PRINCIPAL\n", acessosPRINCIPAL[acessoAtual]);
 
-        // Cria uma celula com o valor da posicao da RAM que foi acessado
+        // Cria uma celula com o valor da posicao da PRINCIPAL que foi acessado
         Celula a;
         a.Linha.alteracao = alteracaoEntrada[acessoAtual];
         a.Linha.fifo = acessoAtual;
-        if(acessosRAM[acessoAtual] % 2 == 0){
-            a.Linha.posicaoValor1 = memRam[acessosRAM[acessoAtual]];
-            a.Linha.posicaoValor2 = memRam[acessosRAM[acessoAtual]+1];
+        if(acessosPRINCIPAL[acessoAtual] % 2 == 0){
+            a.Linha.posicaoValor1 = memPrincipal[acessosPRINCIPAL[acessoAtual]];
+            a.Linha.posicaoValor2 = memPrincipal[acessosPRINCIPAL[acessoAtual]+1];
             if(alteracaoEntrada[acessoAtual] == 1){
-                a.Linha.valor1 = rand() % RANGE_RAM_VALORES;
-                printf("\n--> Alteracao do valor: %d => %d", memRam[a.Linha.posicaoValor1], a.Linha.valor1);
+                a.Linha.valor1 = rand() % RANGE_PRINCIPAL_VALORES;
+                printf("\n--> Alteracao do valor: %d => %d", memPrincipal[a.Linha.posicaoValor1], a.Linha.valor1);
             }else{
-                a.Linha.valor1 = memRam[a.Linha.posicaoValor1];
+                a.Linha.valor1 = memPrincipal[a.Linha.posicaoValor1];
             }
-            a.Linha.valor2 = memRam[a.Linha.posicaoValor2];
+            a.Linha.valor2 = memPrincipal[a.Linha.posicaoValor2];
         }else{
-            a.Linha.posicaoValor1 = memRam[acessosRAM[acessoAtual]-1];
-            a.Linha.posicaoValor2 = memRam[acessosRAM[acessoAtual]];
-            a.Linha.valor1 = memRam[a.Linha.posicaoValor1];
+            a.Linha.posicaoValor1 = memPrincipal[acessosPRINCIPAL[acessoAtual]-1];
+            a.Linha.posicaoValor2 = memPrincipal[acessosPRINCIPAL[acessoAtual]];
+            a.Linha.valor1 = memPrincipal[a.Linha.posicaoValor1];
             if(alteracaoEntrada[acessoAtual] == 1){
-                a.Linha.valor2 = rand() % RANGE_RAM_VALORES;      
-                printf("\n--> Alteracao do valor: %d => %d", memRam[a.Linha.posicaoValor2], a.Linha.valor2);
+                a.Linha.valor2 = rand() % RANGE_PRINCIPAL_VALORES;      
+                printf("\n--> Alteracao do valor: %d => %d", memPrincipal[a.Linha.posicaoValor2], a.Linha.valor2);
             }else{
-                a.Linha.valor2 = memRam[a.Linha.posicaoValor2];
+                a.Linha.valor2 = memPrincipal[a.Linha.posicaoValor2];
             }
         }
 
@@ -93,7 +93,7 @@ int main (){
                     reorganizaFifo(&memCache);
                 }
                 // Remove o prieiro da lista
-                removePrimeiroLista(a, &memCache, memRam);
+                removePrimeiroLista(a, &memCache, memPrincipal);
             }
         }else{
             printf("\n-> Achou na posicao na cache (HIT)\n");
@@ -104,9 +104,9 @@ int main (){
         }
     }
 
-    printf("\n\n---> Imprimindo memoria RAM\n");
-    for(int i=0; i<QTD_LINHA_RAM; i++){
-        printf("posicao %d -> %d   ", i, memRam[i]);
+    printf("\n\n---> Imprimindo memoria PRINCIPAL\n");
+    for(int i=0; i<QTD_LINHA_PRINCIPAL; i++){
+        printf("posicao %d -> %d   ", i, memPrincipal[i]);
         if(i%6 == 0){
             printf("\n");
         }

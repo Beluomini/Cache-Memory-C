@@ -3,6 +3,7 @@
 #include <math.h>
 #include "estrutura.h"
 
+// Cria uma cache no tipo lista vazia
 void FLVazia (TipoLista *Lista){
     Lista -> Primeiro = (Celula*) malloc(sizeof(Celula));
     Lista -> Ultimo = Lista -> Primeiro;
@@ -10,6 +11,7 @@ void FLVazia (TipoLista *Lista){
     Lista -> Tamanho = 0;
 }
 
+// Verifica se a Cache esta vazia
 int Vazia (TipoLista Lista){
     return (Lista.Primeiro == Lista.Ultimo);
 }
@@ -23,11 +25,11 @@ void Insere (LinhaCache novaLinha, TipoLista *Lista){
     Lista -> Tamanho++;
 }
 
-//Busca um valor na lista remove caso encontre
+// Busca um valor na lista remove caso encontre
 void Retira (Celula* p, TipoLista *Lista){
     Celula* q;
     if (Vazia(*Lista)){
-        printf ("Erro: lista vazia ou posicao inexistente.\n");
+        printf ("Erro: cache vazia ou posicao inexistente.\n");
     }else if(p->Prox==NULL){
         q = Lista->Primeiro;
         while(q->Prox != p){
@@ -47,10 +49,10 @@ void Retira (Celula* p, TipoLista *Lista){
     }
 }
 
-//Busca um valor na lista remove caso encontre
+// Busca um valor na lista remove caso encontre
 void RetiraPrimeiro (Celula* p, TipoLista *Lista){
     if (Vazia(*Lista)){
-        printf ("Erro: lista vazia ou posicao inexistente.\n");
+        printf ("Erro: cache vazia ou posicao inexistente.\n");
     }else if(p->Prox==NULL){
         Lista -> Primeiro = (Celula*) malloc(sizeof(Celula));
         Lista -> Ultimo = Lista -> Primeiro;
@@ -64,14 +66,14 @@ void RetiraPrimeiro (Celula* p, TipoLista *Lista){
     }
 }
 
-//Imprime a lista
+// Imprime uma lista
 void Imprime(TipoLista Lista){
     Celula* Aux;
     Aux = Lista.Primeiro -> Prox;
     printf ("\n-----------------------------------------------------");
     while (Aux != NULL){
-        printf ("\nValor 1 => %d - posicao na RAM => %d", Aux->Linha.valor1, Aux->Linha.posicaoValor1);
-        printf ("\nValor 2 => %d - posicao na RAM => %d", Aux->Linha.valor2, Aux->Linha.posicaoValor2);
+        printf ("\nValor 1 => %d - posicao na PRINCIPAL => %d", Aux->Linha.valor1, Aux->Linha.posicaoValor1);
+        printf ("\nValor 2 => %d - posicao na PRINCIPAL => %d", Aux->Linha.valor2, Aux->Linha.posicaoValor2);
         printf ("\nAlteracao: %d", Aux->Linha.alteracao);
         printf ("\nFIFO: %d", Aux->Linha.fifo);
         printf ("\n-----------------------------------------------------");
@@ -79,7 +81,7 @@ void Imprime(TipoLista Lista){
     }
 }
 
-//Imprime a lista uma Celula
+// Imprime uma Celula
 void ImprimeCelula(Celula cel){
     printf("\n> Celula -----------------------------------");
     printf ("\nvalor1: %d", cel.Linha.valor1);

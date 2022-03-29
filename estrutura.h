@@ -3,10 +3,14 @@
 #define CELULA
 #define LISTA
 
-#define QTD_LINHA_RAM 1000
+// Quantidade de posicoes que a PRINCIPAL vai ter
+#define QTD_LINHA_PRINCIPAL 1000
+// Quantidade de posicoes que a CACHE vai ter
 #define QTD_LINHA_CACHE 16
+// Quantidade de acessos que vao ocorrer na PRINCIPAL
 #define TAM_ENTRADA_ACESSOS 24
-#define RANGE_RAM_VALORES 1000
+// Variacao maxima dos valores da PRINCIPAL
+#define RANGE_PRINCIPAL_VALORES 1000
 
 typedef struct{
     int valor1;     //valor da primeira coluna da linha
