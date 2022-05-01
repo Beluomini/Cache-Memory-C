@@ -115,7 +115,8 @@ int main (){
     printf("\n\n---> Imprimindo memoria cache\n");
     Imprime(memCache);
 
-    printf("\n\nPrograma Finalizado :)\n");
+    printf("\n\nPrograma Finalizado :) (digite qualquer numero para fechar)\n");
+    scanf("%d", &opcao);
     return 0;
 
 }
